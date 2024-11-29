@@ -26,7 +26,7 @@ Where:
 ## Formal Approach In Original Paper 
 
 $$
-N_{\text{out}}(t+1) = S \left\{ \prod_{m=1}^q \neg N_{jm}(t) \cdot \sum_{s \in K_{\text{out}}} \prod_{z \in s} N_z(t) \right\}
+N_{\text{out}}(t+1) = S \{\prod_{m=1}^q \neg N_{jm}(t) \cdot \sum_{s \in K_{\text{out}}} \prod_{z \in s} N_z(t)\}
 $$
 
 Where:
@@ -41,11 +41,11 @@ Where:
 
 #### Inhibitory Term: $\prod_{m=1}^q \neg N_{jm}(t)$
 
-This means that, since we perform and operation with rest of them $(\cdot)$ if any inhibitory neuron fires in set of $N_{jm}$, then our output will not fired.
+This means that, since we perform $and$ operation with the rest of them $(\cdot)$ if any inhibitory neuron fires in set of $N_{jm}$, then our output will not fire.
 
 #### Excitatory Term: $\sum_{s \in K_{\text{out}}} \prod_{z \in s} N_z(t)$ 
 
-This is a bit trickier because it simulates a threshold mechanism. First, we perform an and operation within each set $s$ that contains excitatory neurons $N_z$. The product $\prod_{z \in s} N_z(t)$ ensures that the excitatory neurons in each set must all be active for that set to contribute to the sum. Then, the summation $\sum_{s \in K_{\text{out}}}$ acts like an OR operation, simulating the accumulation of excitatory inputs from multiple sets.
+This is a bit trickier because it simulates a threshold mechanism. First, we perform an $and$ operation within each set $s$ that contains excitatory neurons $N_z$. The product $\prod_{z \in s} N_z(t)$ ensures that the excitatory neurons in each set must all be active for that set to contribute to the sum. Then, the summation $\sum_{s \in K_{\text{out}}}$ acts like an OR operation, simulating the accumulation of excitatory inputs from multiple sets.
 
 For example, if $N_1$ and $N_2$ are both active, they together are sufficient to exceed the threshold and cause the neuron to fire. However, if $N_3$ is active by itself, it can also exceed the threshold independently, without needing other excitatory inputs. 
 
@@ -54,11 +54,11 @@ For example, if $N_1$ and $N_2$ are both active, they together are sufficient to
 </p>
 
 $$
-N_{\text{out}}(t+1) = \left( (N_1 \land N_2) \lor N_3 \right) \land \neg N_4
+N_{\text{out}}(t+1) = ( (N_1 \land N_2) \lor N_3 ) \land \neg N_4
 $$
 
 
-## Referances
+## References
 
 https://www.cs.cmu.edu/~./epxing/Class/10715/reading/McCulloch.and.Pitts.pdf
 
@@ -68,3 +68,4 @@ https://marlin.life.utsa.edu/mcculloch-and-pitts.html
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
   type="text/javascript">
 </script>
+
