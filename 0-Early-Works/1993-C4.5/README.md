@@ -6,7 +6,6 @@ You may also find some useful resources in the source code if you're interested.
 
 The C4.5 algorithm is used to construct decision trees for classification tasks by recursively splitting the dataset based on features that provide the maximum information gain.
 
----
 
 ## Entropy
 
@@ -85,9 +84,7 @@ $$
 
 This number represents the expected surprise per selection. If the probabilities were \( 50\%-50\% \), the entropy would be 1, indicating maximum uncertainty.
 
----
 
-## Transition to Information Gain
 
 Entropy gives us a way to measure the uncertainty in a dataset. Information Gain measures the reduction in entropy after splitting the dataset based on a particular feature.
 
@@ -433,6 +430,7 @@ $$
 |Wind| 0.049 |
 
 **Outlook** has the highest Information Gain, so it becomes the root of the tree.
+
 </center>
 
 Then the process continues recursively for each branch. 
