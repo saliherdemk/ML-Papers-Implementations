@@ -144,7 +144,6 @@ $$
 H(S) = -p_{\text{Yes}} \log_2(p_{\text{Yes}}) - p_{\text{No}} \log_2(p_{\text{No}})
 $$
 
-Substituting probabilities:
 
 $$
 p_{\text{Yes}} = \frac{9}{14}, \quad p_{\text{No}} = \frac{5}{14}
@@ -154,7 +153,6 @@ $$
 H(S) = -\frac{9}{14} \log_2\left(\frac{9}{14}\right) - \frac{5}{14} \log_2\left(\frac{5}{14}\right)
 $$
 
-Using a calculator:
 
 $$
 H(S) = -0.643 \cdot \log_2(0.643) - 0.357 \cdot \log_2(0.357)
