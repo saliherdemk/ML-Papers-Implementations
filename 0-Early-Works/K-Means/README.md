@@ -1,4 +1,3 @@
-
 # K-Means Clustering Algorithm
 
 K-Means is an unsupervised machine learning algorithm used for clustering data into groups (clusters). The main goal is to divide a dataset into **K** distinct, non-overlapping clusters based on the similarity of the data points.
