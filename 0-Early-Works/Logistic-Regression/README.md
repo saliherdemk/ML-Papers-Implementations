@@ -19,19 +19,24 @@ Here:
 
 ## Cost Function
 
-The cost function for logistic regression is derived from a probabilistic approach. The model predicts $P(y = 1 \mid x; \theta) = h_\theta(x)$ and $P(y = 0 \mid x; \theta) = 1 - h_\theta(x)$.
+The cost function for logistic regression is derived from a probabilistic approach. The model predicts 
+
+$P(y = 1 \mid x; \theta) = h_\theta(x)$ and $P(y = 0 \mid x; \theta) = 1 - h_\theta(x)$.
 
 The likelihood for a single example is:  
+
 $$
 P(y \mid x; \theta) = h_\theta(x)^y (1 - h_\theta(x))^{1 - y}
 $$
 
 The log-likelihood for the entire dataset is:  
+
 $$
 \ell(\theta) = \sum_{i=1}^m \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right]
 $$
 
 The negative log-likelihood (minimized in optimization) becomes the **cross-entropy loss**:  
+
 $$
 J(\theta) = -\frac{1}{m} \sum_{i=1}^m \left[ y^{(i)} \log(h_\theta(x^{(i)})) + (1 - y^{(i)}) \log(1 - h_\theta(x^{(i)})) \right]
 $$
@@ -185,3 +190,7 @@ $$
 $$
 Q_j := Q_j - \alpha \frac{\partial J(\theta)}{\partial \theta_j}
 $$
+
+## References
+
+- https://www.youtube.com/watch?v=het9HFqo1TQ
