@@ -53,6 +53,7 @@ $$
 - $P(\text{Cheap} \mid \text{No Spam}) = \frac{10}{75} = 0.1333$
 
 Assuming independence of words:
+
 $$
 P(\text{Buy} \cap \text{Cheap} \mid \text{Spam}) = P(\text{Buy} \mid \text{Spam}) \cdot P(\text{Cheap} \mid \text{Spam}) = 0.8 \cdot 0.6 = 0.48
 $$
