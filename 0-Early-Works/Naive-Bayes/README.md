@@ -133,8 +133,22 @@ $$
 $$
 
 $$
-\hat{C} = argmax_C \left( \log P(C) + \sum_{i=1}^n \log P(X_i \mid C) \right)
+\hat{c} = argmax_c \left( \log p(c) + \sum_{i=1}^n \log p(x_i \mid c) \right)
 $$
+
+In this implementation, I will use **Gaussian Naive Bayes**, which assumes that each feature $x_i$ follows a Gaussian distribution for each class $c$. The conditional probability is given by:
+
+$$
+P(x_i \mid c) = \frac{1}{\sqrt{2 \pi \sigma_c^2}} \exp\left(-\frac{(x_i - \mu_c)^2}{2 \sigma_c^2}\right)
+$$
+
+Where:
+- $\mu_c$: Mean of the feature $x_i$ for class $c$.
+- $\sigma_c^2$: Variance of the feature $x_i$ for class $c$.
+
+Other distributions, such as multinomial or Bernoulli, can be used in specific conditions depending on the nature of the features (e.g., categorical or binary data).
+
+But normally, features need to be inspected separately, and a suitable probability density function (PDF) should be chosen for each.
 
 
 ## References
