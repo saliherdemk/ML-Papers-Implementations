@@ -71,7 +71,17 @@ We will use the following dataset for examples:
 
 ### Measures of Central Tendency
 - **Mean**: The average value.
-  $$ \text{Mean} = \frac{\sum x}{n} = \frac{5 + 8 + 7 + 10 + 6}{5} = \frac{36}{5} = 7.2 $$
+  - Population Mean
+  
+  $$
+  \mu = \frac{\sum X}{N} 
+  $$
+
+  - Sample Mean
+
+  $$
+  \overline{X} = \frac{\sum X}{n}
+  $$
 
 - **Median**: The middle value when data is sorted.
   Sorted data: $[5, 6, 7, 8, 10]$
@@ -85,12 +95,45 @@ We will use the following dataset for examples:
   $$ \text{Range} = x_{\text{max}} - x_{\text{min}} = 10 - 5 = 5 $$
 
 - **Variance**: Measures the average squared deviation of each data point from the mean. It quantifies how spread out the data is. 
-  $$ \text{Variance} = \sigma^2 = \frac{\sum (x_i - \mu)^2}{n} $$
-  $$ \sigma^2 = \frac{(5 - 7.2)^2 + (8 - 7.2)^2 + (7 - 7.2)^2 + (10 - 7.2)^2 + (6 - 7.2)^2}{5} $$
-  $$ \sigma^2 = \frac{4.84 + 0.64 + 0.04 + 7.84 + 1.44}{5} = \frac{14.8}{5} = 2.96 $$
+
+  - Population Variance
+
+  $$ \sigma^2 = \frac{\sum (x_i - \mu)^2}{N} $$
+  
+  - Sample variance (unbiased)
+
+  $$ S^2 = \frac{\sum (x_i - \overline{X})^2}{n - 1}$$
+
+  ##### Bessel's correction
+
+  In order to understand why $n - 1$ is used, we need to revisit what variance actually represents. Variance quantifies how spread out the data is. For sample variance, we calculate how spread out the data is from the sample mean ($\overline{X}$). However, samples cannot perfectly represent the population, and since we don't know the population mean ($\mu$), we also don't know the population variance. Therefore, we need to estimate it.
+
+  (I spent too much time on this. I added some additional links to the resources. There are proofs, intuitive explanations with graphs, formal proofs, and so on, but some of them are not very convincing. I'll note this down briefly here just as a recall for later, so this section might not work for you.)
+
+  Sample variance tends to underestimate the population variance on average. This is due to how samples are typically selected. Since variance is just a measurement of how spread out the data is, and since we calculate the sample variance using the sample mean, in order to overestimate the variance in general, we would need to choose more samples from the overestimated region (blue) than from the other region (red). I say "in general" because, of course, you can select specific samples to overestimate the population variance but it generally tends to underestimate the population variance on average.
+
+  <p align="center">
+    <img src="./media/bessels.png">
+  </p>
+
+  Why n - 1? We know that when you have a sample and estimate the mean, you have n – 1 degrees of freedom, where n is the sample size (degrees of freedom). For calculating $\overline{X}$, there are only n - 1 free variables that you can set freely, as the last value has to be chosen to satisfy the equation.
+ 
+
+  Estimating Bias: $S_n^2 = \sigma^2 - Bias$
+  
+  if n = 1 $X = \overline{X}$ so $S_n^2 = 0$ therefore $Bias = \sigma^2$
+  
+  if n = 2 on avarage $Bias = \frac{\sigma^2}{2}$
+
+  $Avarage\ Bias = \frac{\sigma^2}{n}$
+
+  $S_n^2 = \frac{\sigma^2}{n}$ so $S_n^2(\frac{n}{n - 1}) = \sigma^2$
+
+  $\frac{\sum (X-\overline{X})^2}{n}(\frac{n}{n-1}) =\sigma^2$ -Not always true obsiously but generally-
+
 
 - **Standard Deviation**: Square root of the variance. It represents the average distance of each data point from the mean. 
-  $$ \sigma = \sqrt{\text{Variance}} = \sqrt{2.96} \approx 1.72 $$
+  $$ \sigma = \sqrt{\text{Variance}}$$
 
 - **Interquartile Range (IQR)**: Spread of the middle 50% of data.
   - First quartile ($Q_1$): Median of the lower half: $6$
@@ -241,14 +284,57 @@ $$
 P(Z > 1.3) = 1 - 0.9032 =0.0968
 $$
 
+### Confusion Matrix
+
+The confusion matrix is a tool to evaluate the performance of a classification model. It provides insights into the types of errors a model makes when predicting binary outcomes.
+
+
+|                  | **Predicted Positive** | **Predicted Negative** |
+|------------------|-------------------------|-------------------------|
+| **Actual Positive** | True Positive (TP)   | False Negative (FN)  |
+| **Actual Negative** | False Positive (FP)  | True Negative (TN)   |
+
+- Type I Error is False Positive 
+
+- Type II Error is False Negative 
+
+#### **Key Metrics from the Confusion Matrix**
+1. **Accuracy**:
+   $$
+   \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+   $$
+
+2. **Precision** (Positive Predictive Value):
+   $$
+   \text{Precision} = \frac{TP}{TP + FP}
+   $$
+
+3. **Recall** (Sensitivity or True Positive Rate):
+   $$
+   \text{Recall} = \frac{TP}{TP + FN}
+   $$
+
+4. **Specificity** (True Negative Rate):
+   $$
+   \text{Specificity} = \frac{TN}{TN + FP}
+   $$
+
+5. **F1-Score** (Harmonic Mean of Precision and Recall):
+   $$
+   F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+   $$
 
 
 
 ## References
+
+https://www.youtube.com/watch?v=ke8nSbXUJjQ
 
 https://www.youtube.com/watch?v=LZzq1zSL1bs
 
 https://en.wikipedia.org/wiki/Standard_normal_table
 
 https://www.youtube.com/watch?v=xbDnT3NqEIs
+
+https://gregorygundersen.com/blog/2019/01/11/bessel/
 
