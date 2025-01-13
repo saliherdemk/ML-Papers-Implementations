@@ -40,17 +40,17 @@ We will use the following dataset for examples:
 ### Percentiles and Quantiles
 - Percentiles: A measure that indicates the value below which a given percentage of observations fall.
   - Formula: If the dataset is sorted in ascending order, the $k^{th}$ percentile is the value at position:
-    $$ P_k = \frac{k}{100} \cdot (n + 1) $$
-    where $n$ is the number of data points. The $n + 1$ ensures interpolation between data points for continuous percentiles. 
-    When calculating percentiles or quantiles, the idea is to find a position in the dataset that corresponds to a specific percentage of the data.
-    If you simply use $n$, the formula works for discrete datasets but may underestimate the percentile position for continuous or interpolated datasets. 
-    Adding $1$ accounts for the gap between data points when imagining the dataset as a continuum. 
-    It essentially extends the range to allow for interpolation between actual data points.
+
+$$ P_k = \frac{k}{100} \cdot (n + 1) $$
+
+  where $n$ is the number of data points. The $n + 1$ ensures interpolation between data points for continuous percentiles. When calculating percentiles or quantiles, the idea is to find a position in the dataset that corresponds to a specific percentage of the data. If you simply use $n$, the formula works for discrete datasets but may underestimate the percentile position for continuous or interpolated datasets. Adding $1$ accounts for the gap between data points when imagining the dataset as a continuum. It essentially extends the range to allow for interpolation between actual data points.
 
   - Example: In the dataset $[5, 6, 7, 8, 10]$:
     - The $25^{th}$ percentile ($P_{25}$) lies at position:
-      $$ P_{25} = \frac{25}{100} \cdot (5 + 1) = 1.5 $$
-      Interpolating between the $1^{st}$ and $2^{nd}$ values: $\frac{5 + 6}{2} = 5.5$
+
+$$ P_{25} = \frac{25}{100} \cdot (5 + 1) = 1.5 $$
+    
+  Interpolating between the $1^{st}$ and $2^{nd}$ values: $\frac{5 + 6}{2} = 5.5$
 
 - Quantiles: Points that divide the data into equal-sized intervals.
   - Quartiles divide data into four intervals:
@@ -73,36 +73,34 @@ We will use the following dataset for examples:
 - Mean: The average value.
   - Population Mean
   
-  $$
-  \mu = \frac{\sum X}{N} 
-  $$
+$$\mu = \frac{\sum X}{N}$$
 
   - Sample Mean
 
-  $$
-  \overline{X} = \frac{\sum X}{n}
-  $$
+$$\overline{X} = \frac{\sum X}{n}$$
 
 - Median: The middle value when data is sorted.
   Sorted data: $[5, 6, 7, 8, 10]$
   Median = $7$
 
 - Mode: The most frequent value. In this dataset, no value repeats.
-  $$ \text{Mode} = \text{None} $$
+
+$$ \text{Mode} = \text{None} $$
 
 ### Measures of Dispersion
 - Range: Difference between the largest and smallest values.
-  $$ \text{Range} = x_{\text{max}} - x_{\text{min}} = 10 - 5 = 5 $$
+
+$$ \text{Range} = x_{\text{max}} - x_{\text{min}} = 10 - 5 = 5 $$
 
 - Variance: Measures the average squared deviation of each data point from the mean. It quantifies how spread out the data is. 
 
   - Population Variance
 
-  $$ \sigma^2 = \frac{\sum (x_i - \mu)^2}{N} $$
+$$ \sigma^2 = \frac{\sum (x_i - \mu)^2}{N} $$
   
   - Sample variance (unbiased)
 
-  $$ S^2 = \frac{\sum (x_i - \overline{X})^2}{n - 1}$$
+$$ S^2 = \frac{\sum (x_i - \overline{X})^2}{n - 1}$$
 
   ##### Bessel's correction
 
@@ -133,12 +131,14 @@ We will use the following dataset for examples:
 
 
 - Standard Deviation: Square root of the variance. It represents the average distance of each data point from the mean. 
-  $$ \sigma = \sqrt{\text{Variance}}$$
+  
+$$ \sigma = \sqrt{\text{Variance}}$$
 
 - Interquartile Range (IQR): Spread of the middle 50% of data.
   - First quartile ($Q_1$): Median of the lower half: $6$
   - Third quartile ($Q_3$): Median of the upper half: $8$
-  $$ \text{IQR} = Q_3 - Q_1 = 8 - 6 = 2 $$
+
+$$ \text{IQR} = Q_3 - Q_1 = 8 - 6 = 2 $$
 
 ### Probability Density Function (PDF) and Probability Mass Function (PMF)
 
@@ -149,21 +149,25 @@ We will use the following dataset for examples:
   - Key Properties:
     1. The PDF is always non-negative: $f(x) \geq 0$.
     2. The total area under the curve equals 1:
-       $$ \int_{-\infty}^{\infty} f(x) \, dx = 1 $$
+       
+$$ \int_{-\infty}^{\infty} f(x) \, dx = 1 $$
 
 - Probability Mass Function (PMF): Describes the probabilities for discrete random variables, assigning probabilities to exact values.
 
   - Key Properties:
     1. The PMF is always non-negative: $P(X = x) \geq 0$.
     2. The sum of probabilities for all possible values equals 1:
-       $$ \sum_{x} P(X = x) = 1 $$
+       
+$$ \sum_{x} P(X = x) = 1 $$
 
 
 ### Gaussian (Normal) Distribution
 - Definition: A continuous probability distribution characterized by its bell-shaped curve.
 - PDF:
-  $$ f(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}} $$
-  Where:
+  
+$$ f(x) = \frac{1}{\sqrt{2\pi \sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}} $$
+
+Where:
   - $\mu$ is the mean (center of the distribution).
   - $\sigma$ is the standard deviation (spread of the distribution).
 
@@ -183,9 +187,7 @@ Where:
 
 Where does the value $x=7.2$ fall in terms of standard deviations from the mean?
 
-$$
-Z = \frac{7.2 - 6}{1} = 1.2 sd
-$$
+$$ Z = \frac{7.2 - 6}{1} = 1.2 sd $$
 
 ### Standart Normal Distribution
 
@@ -193,33 +195,19 @@ The standard normal distribution, also called the z-distribution, is a special n
 
 Lets apply Z-score to every value:
 
-$$
-Z(3) = \frac{3 - 6}{1} = -3
-$$
+$$ Z(3) = \frac{3 - 6}{1} = -3 $$
 
-$$
-Z(4) = \frac{4 - 6}{1} = -2
-$$
+$$ Z(4) = \frac{4 - 6}{1} = -2 $$
 
-$$
-Z(5) = \frac{5 - 6}{1} = -1
-$$
+$$ Z(5) = \frac{5 - 6}{1} = -1 $$
 
-$$
-Z(6) = \frac{6 - 6}{1} = 0
-$$
+$$ Z(6) = \frac{6 - 6}{1} = 0 $$
 
-$$
-Z(7) = \frac{7 - 6}{1} = 1
-$$
+$$ Z(7) = \frac{7 - 6}{1} = 1 $$
 
-$$
-Z(8) = \frac{8 - 6}{1} = 2
-$$
+$$ Z(8) = \frac{8 - 6}{1} = 2 $$
 
-$$
-Z(9) = \frac{9 - 6}{1} = 3
-$$
+$$ Z(9) = \frac{9 - 6}{1} = 3 $$
 
 <p align="center">
   <img src="./media/standart-normal-dist.png" width="500">
@@ -299,29 +287,34 @@ The confusion matrix is a tool to evaluate the performance of a classification m
 
 ### Key Metrics from the Confusion Matrix
 1. Accuracy:
-   $$
-   \text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
-   $$
+   
+$$
+\text{Accuracy} = \frac{TP + TN}{TP + TN + FP + FN}
+$$
 
 2. Precision (Positive Predictive Value):
-   $$
-   \text{Precision} = \frac{TP}{TP + FP}
-   $$
+
+$$
+\text{Precision} = \frac{TP}{TP + FP}
+$$
 
 3. Recall (Sensitivity or True Positive Rate):
-   $$
-   \text{Recall} = \frac{TP}{TP + FN}
-   $$
+
+$$
+\text{Recall} = \frac{TP}{TP + FN}
+$$
 
 4. Specificity (True Negative Rate):
-   $$
-   \text{Specificity} = \frac{TN}{TN + FP}
-   $$
+
+$$
+\text{Specificity} = \frac{TN}{TN + FP}
+$$
 
 5. F1-Score (Harmonic Mean of Precision and Recall):
-   $$
-   F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
-   $$
+
+$$
+F1 = 2 \cdot \frac{\text{Precision} \cdot \text{Recall}}{\text{Precision} + \text{Recall}}
+$$
 
 # Hypothesis Testing
 
@@ -511,6 +504,7 @@ Covariance measures how two variables change together. It helps determine whethe
 
 ##### Formula for Covariance:
 For two variables $X$ and $Y$ with sample means $\overline{X}$ and $\overline{Y}$:
+
 $$
 \text{Cov}(X, Y) = \frac{\sum_{i=1}^n (X_i - \overline{X})(Y_i - \overline{Y})}{n - 1}
 $$
@@ -535,9 +529,11 @@ To address these limitations, we use correlation, which standardizes covariance 
 
 #### Formula for Correlation:
 The Pearson correlation coefficient ($r$) is given by:
+
 $$
 r = \frac{\text{Cov}(X, Y)}{\sigma_X \cdot \sigma_Y}
 $$
+
 Where:
 - $\text{Cov}(X, Y)$: Covariance between $X$ and $Y$,
 - $\sigma_X$: Standard deviation of $X$,
@@ -617,7 +613,6 @@ We can now use those ranks to calculate spearman correlation.
 $$
 r_s = \rho \left[R\left[X\right], R\left[Y\right] \right] = \frac{cov \left[R\left[X\right], R\left[Y \right]\right]}{\sigma_{R\left[X\right]}\sigma_{R\left[Y\right]}}
 $$
-
 
 <center>
 
