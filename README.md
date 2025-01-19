@@ -1,15 +1,20 @@
-# Timeline of Neural Network Development
+# ML-DS Algorithms Implementations
 
-- **1943**: McCulloch & Pitts - [A Logical Calculus of the Ideas Immanent in Nervous Activity](https://www.cs.cmu.edu/~./epxing/Class/10715/reading/McCulloch.and.Pitts.pdf
-)
+This repository contains implementations of machine learning papers. In the early-works folder, there are fundamental algorithms, mostly derived from data science, that have been implemented from scratch in Python. For each implementation, there are accompanying notes. Note that some of the notes might not work for you since they were written for my own understanding, but overall, they might still be useful.
 
-- **1949**: Donald Hebb - [The Organization of Behavior](https://archive.org/details/in.ernet.dli.2015.168156/page/n83/mode/2up?view=theater
-)
+## Early Works
 
-- **1958**: Frank Rosenblatt - [The Perceptron: A Probabilistic Model For Information Storage And Organization In The Brain](https://www.ling.upenn.edu/courses/cogs501/Rosenblatt1958.pdf) / 1962 - Principles Of Neurodynamics 
-
-- **1960**: Bernand Widrow & Marcian Hoff - ADALINE & MADALINE [wiki](https://en.wikipedia.org/wiki/ADALINE)
-
-
-
+- 1943-Logical-Calculus - McCulloch-Pitts Neuron Model
+- 1949-The-Organization-Of-Behavior - Hebbian Learning
+- 1958-The-Perceptron - Perceptron Algorithm
+- 1960-Adaline-Madaline - Adaptive Linear Neuron and Multiple Adaptive Linear Neuron
+- 1967-KNN - k-Nearest Neighbors Algorithm
+- 1993-C4.5 - Decision Tree Algorithm
+- K-Means
+- Linear Regression
+- Logistic Regression
+- Naive Bayes
+- PCA **(Planned)** 
+- Random Forest **(Planned)**
+- SVM **(Planned)**
 
