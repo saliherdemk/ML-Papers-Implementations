@@ -37,6 +37,7 @@ Where:
 Which is the same thing as 
 
 $$ \Delta w = \eta \cdot x^T \otimes y $$
+
 if we vectorize the calcualtions.
 
 - $\eta$ is the still learning rate,

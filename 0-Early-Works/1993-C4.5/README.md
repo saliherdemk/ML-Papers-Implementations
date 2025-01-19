@@ -60,15 +60,17 @@ $$
 
 The surprise for each outcome is:
 
-- Surprise for a blue ball:
-  $$
-  \text{Surprise}_{\text{blue}} = \log_2\left(\frac{1}{p_{\text{blue}}}\right) = -\log_2(p_{\text{blue}})
-  $$
+Surprise for a blue ball:
 
-- Surprise for a red ball:
-  $$
-  \text{Surprise}_{\text{red}} = \log_2\left(\frac{1}{p_{\text{red}}}\right) = -\log_2(p_{\text{red}})
-  $$
+$$
+Surprise_{\text{blue}} = \log_2\left(\frac{1}{p_{\text{blue}}}\right) = -\log_2(p_{\text{blue}})
+$$
+
+Surprise for a red ball:
+  
+$$
+Surprise_{\text{red}} = \log_2\left(\frac{1}{p_{\text{red}}}\right) = -\log_2(p_{\text{red}})
+$$
 
 Entropy aggregates these values by weighting the surprise of each outcome by its probability. The entropy of the bag is:
 

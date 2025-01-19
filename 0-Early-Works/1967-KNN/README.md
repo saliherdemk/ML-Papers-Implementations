@@ -6,25 +6,20 @@ The basic idea is to predict the label of a given data point based on the labels
 **Compute the distance between the data points**:
 The distance between the data point for which we want to make a prediction and the training points is calculated.
 
-### Euclidean distance
+Euclidean distance
 
-$$
-d(\mathbf{x}_i, \mathbf{x}_j) = \sqrt{\sum_{k=1}^{n} (x_{ik} - x_{jk})^2}
-$$
+$$ d(x_i, x_j) = \sqrt{\sum_{k=1}^{n} (x_{ik} - x_{jk})^2} $$
 
-### Manhattan distance - L1 norm
+Manhattan distance - L1 norm
 
+$$ d(x_i, x_j) = \sum_{k=1}^{n} |x_{ik} - x_{jk}| $$
 
-$$
-d(\mathbf{x}_i, \mathbf{x}_j) = \sum_{k=1}^{n} |x_{ik} - x_{jk}|
-$$
-
-### Minkowski distance
+Minkowski distance
 
 The Minkowski distance is a generalization of both Euclidean and Manhattan distances. It is defined as:
 
 $$
-d(\mathbf{x}_i, \mathbf{x}_j) = \left( \sum_{k=1}^{n} |x_{ik} - x_{jk}|^p \right)^{1/p}
+d(x_i, x_j) = \left( \sum_{k=1}^{n} |x_{ik} - x_{jk}|^p \right)^{1/p}
 $$
 
 - For $p=1$, this becomes the **Manhattan distance**.
