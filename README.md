@@ -14,7 +14,6 @@ This repository contains implementations of machine learning papers. In the earl
 - Linear Regression
 - Logistic Regression
 - Naive Bayes
-- PCA **(Planned)** 
-- Random Forest **(Planned)**
-- SVM **(Planned)**
+- PCA 
+- SVM
 
