@@ -147,5 +147,69 @@ To train RNNs, we use Backpropagation Through Time, a variant of backpropagation
 
 However, RNNs suffer from vanishing gradients and exploding gradients problems especially when processing long sequences.
 
-### Long Short Term Memory
+# Long Short Term Memory
+
+Long Short Term Memory networks are a special kind of RNN designed to overcome the vanishing and exploding gradient problems in standard RNNs. They can capture longer-term dependencies by using a more complex memory cell structure.
+
+An LSTM maintains a cell state $c_t$ in addition to the hidden state $h_t$. The cell state acts as a kind of conveyor belt, allowing information to flow relatively unchanged, with gates controlling what is added or removed.
+
+At each timestep $t$, the LSTM updates are:
+
+- Input: $x_t$  
+- Previous hidden state: $h_{t-1}$  
+- Previous cell state: $c_{t-1}$  
+- Output hidden state: $h_t$  
+- Current cell state: $c_t$
+
+---
+
+The LSTM uses three gates and a candidate cell state:
+
+- Forget gate $f_t$: decides what information to discard from the cell state  
+- Input gate $i_t$: decides what new information to add to the cell state  
+- Candidate cell state $g_t$: new candidate values to add to the cell state  
+- Output gate $o_t$: decides what information to output from the hidden state
+
+
+$$
+i_t = \sigma(W_{ii} x_t + b_{ii} + W_{hi} h_{t-1} + b_{hi})
+$$
+
+$$
+f_t = \sigma(W_{if} x_t + b_{if} + W_{hf} h_{t-1} + b_{hf})
+$$
+
+$$
+g_t = \tanh(W_{ig} x_t + b_{ig} + W_{hg} h_{t-1} + b_{hg})
+$$
+
+$$
+o_t = \sigma(W_{io} x_t + b_{io} + W_{ho} h_{t-1} + b_{ho})
+$$
+
+$$
+c_t = f_t \odot c_{t-1} + i_t \odot g_t
+$$
+
+$$
+h_t = o_t \odot \tanh(c_t)
+$$
+
+Here, $\sigma$ is the sigmoid activation function,  
+$\tanh$ is the hyperbolic tangent function,  
+$\odot$ denotes element-wise multiplication.  
+
+
+<center>
+<img src="./media/lstm.png"/>
+</center>
+
+
+---
+
+### Parameter shapes
+
+- $W_{ii}, W_{if}, W_{ig}, W_{io}$ shape: $[hidden\_size, embed\_dim]$
+- $W_{hi}, W_{hf}, W_{hg}, W_{ho}$ shape: $[hidden\_size, hidden\_size]$
+- $b_{ii}, b_{if}, b_{ig}, b_{io}$, $b_{hi}, b_{hf}, b_{hg}, b_{ho}$ shape: $[hidden\_size]$
 
