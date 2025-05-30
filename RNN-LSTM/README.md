@@ -209,7 +209,67 @@ $\odot$ denotes element-wise multiplication.
 
 ### Parameter shapes
 
-- $W_{ii}, W_{if}, W_{ig}, W_{io}$ shape: $[hidden\_size, embed\_dim]$
-- $W_{hi}, W_{hf}, W_{hg}, W_{ho}$ shape: $[hidden\_size, hidden\_size]$
-- $b_{ii}, b_{if}, b_{ig}, b_{io}$, $b_{hi}, b_{hf}, b_{hg}, b_{ho}$ shape: $[hidden\_size]$
+- $W_{ii}, W_{if}, W_{ig}, W_{io}$ shape: hidden\_size, embed\_dim
+- $W_{hi}, W_{hf}, W_{hg}, W_{ho}$ shape: hidden\_size, hidden\_size
+- $b_{ii}, b_{if}, b_{ig}, b_{io}$, $b_{hi}, b_{hf}, b_{hg}, b_{ho}$ shape: hidden\_size
+
+
+# Gated Recurrent Unit
+
+Gated Recurrent Units are a simplified variant of LSTMs that also aim to solve the vanishing gradient problem. They have fewer parameters than LSTMs and often perform comparably well on sequence tasks.
+
+GRUs combine the cell state and hidden state into a single hidden state $h_t$, and use two gates:
+
+- **Reset gate** $r_t$: controls how much of the previous hidden state to forget  
+- **Update gate** $z_t$: controls how much of the new hidden state to blend with the old one  
+
+At timestep $t$:
+
+- Input: $x_t$  
+- Previous hidden state: $h_{t-1}$  
+- Output hidden state: $h_t$
+
+---
+
+The GRU equations are:
+
+$$
+r_t = \sigma(W_{ir} x_t + b_{ir} + W_{hr} h_{t-1} + b_{hr})
+$$
+
+$$
+z_t = \sigma(W_{iz} x_t + b_{iz} + W_{hz} h_{t-1} + b_{hz})
+$$
+
+$$
+n_t = \tanh(W_{in} x_t + b_{in} + r_t \odot (W_{hn} h_{t-1} + b_{hn}))
+$$
+
+$$
+h_t = (1 - z_t) \odot n_t + z_t \odot h_{t-1}
+$$
+
+- $r_t$: reset gate  
+- $z_t$: update gate  
+- $n_t$: candidate hidden state  
+- $h_t$: new hidden state  
+
+Here:  
+- $\sigma$ is the sigmoid activation function  
+- $\tanh$ is the hyperbolic tangent  
+- $\odot$ is element-wise multiplication  
+
+---
+
+<center>
+<img src="./media/gru.png"/>
+</center>
+
+---
+
+### Parameter Shapes
+
+- $W_{ir}, W_{iz}, W_{in}$: shape = hidden\_size, embed\_size  
+- $W_{hr}, W_{hz}, W_{hn}$: shape = hidden\_size, hidden\_size  
+- $b_{ir}, b_{hr}, b_{iz}, b_{hz}, b_{in}, b_{hn}$: shape = hidden\_size
 
