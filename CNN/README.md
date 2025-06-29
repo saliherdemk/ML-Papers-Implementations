@@ -89,20 +89,26 @@ This is computed for both height and width separately.
 
 ## Backprop Through Convolution Layer
 
+
 $$
 X = \begin{bmatrix}
 x_{00} & x_{01} & x_{02} \\
 x_{10} & x_{11} & x_{12} \\
 x_{20} & x_{21} & x_{22}
-\end{bmatrix}, \quad
+\end{bmatrix}
+\quad
 K = \begin{bmatrix}
 w_{00} & w_{01} \\
 w_{10} & w_{11}
-\end{bmatrix}, \quad
+\end{bmatrix}
+\quad
 grad\_output = \begin{bmatrix}
 a & b \\
 c & d
-\end{bmatrix}, \quad
+\end{bmatrix}
+$$
+
+$$
 Y = \begin{bmatrix}
 y_{00} & y_{01} \\
 y_{10} & y_{11}
@@ -111,12 +117,14 @@ $$
 
 $$
 \begin{aligned}
-y_{00} &= x_{00} \cdot w_{00} + x_{01} \cdot w_{01} + x_{10} \cdot w_{10} + x_{11} \cdot w_{11} \\
-y_{01} &= x_{01} \cdot w_{00} + x_{02} \cdot w_{01} + x_{11} \cdot w_{10} + x_{12} \cdot w_{11} \\
-y_{10} &= x_{10} \cdot w_{00} + x_{11} \cdot w_{01} + x_{20} \cdot w_{10} + x_{21} \cdot w_{11} \\
-y_{11} &= x_{11} \cdot w_{00} + x_{12} \cdot w_{01} + x_{21} \cdot w_{10} + x_{22} \cdot w_{11}
+y_{00} &= x_{00} w_{00} + x_{01} w_{01} + x_{10} w_{10} + x_{11} w_{11} \\
+y_{01} &= x_{01} w_{00} + x_{02} w_{01} + x_{11} w_{10} + x_{12} w_{11} \\
+y_{10} &= x_{10} w_{00} + x_{11} w_{01} + x_{20} w_{10} + x_{21} w_{11} \\
+y_{11} &= x_{11} w_{00} + x_{12} w_{01} + x_{21} w_{10} + x_{22} w_{11}
 \end{aligned}
 $$
+
+---
 
 $$
 \begin{aligned}
@@ -127,13 +135,59 @@ $$
 \end{aligned}
 $$
 
+---
+
 $$
 \begin{aligned}
 \frac{\partial L}{\partial x_{00}} &= a \cdot w_{00} \\
 \frac{\partial L}{\partial x_{01}} &= a \cdot w_{01} + b \cdot w_{00} \\
+\frac{\partial L}{\partial x_{02}} &= b \cdot w_{01} \\
 \frac{\partial L}{\partial x_{10}} &= a \cdot w_{10} + c \cdot w_{00} \\
-\frac{\partial L}{\partial x_{11}} &= a \cdot w_{11} + b \cdot w_{10} + c \cdot w_{01} + d \cdot w_{00}
+\frac{\partial L}{\partial x_{11}} &= a \cdot w_{11} + b \cdot w_{10} + c \cdot w_{01} + d \cdot w_{00} \\
+\frac{\partial L}{\partial x_{12}} &= b \cdot w_{11} + d \cdot w_{01} \\
+\frac{\partial L}{\partial x_{20}} &= c \cdot w_{10} \\
+\frac{\partial L}{\partial x_{21}} &= c \cdot w_{11} + d \cdot w_{10} \\
+\frac{\partial L}{\partial x_{22}} &= d \cdot w_{11}
 \end{aligned}
+$$
+
+---
+We can calculate the grad\_input = $\frac{\partial L}{\partial X}$ using a convolution with the flipped kernel: 
+
+$$
+fliplr = \begin{bmatrix} w_{01} & w_{00} \\ w_{11} & w_{10} \end{bmatrix}
+\quad\quad
+flipud = \begin{bmatrix} w_{11} & w_{10} \\ w_{01} & w_{00} \end{bmatrix}
+$$
+
+---
+
+$$
+gradOutputPadded = \begin{bmatrix}
+0 & 0 & 0 & 0 \\
+0 & a & b & 0 \\
+0 & c & d & 0 \\
+0 & 0 & 0 & 0
+\end{bmatrix}
+$$
+
+We slide the flipped kernel over the padded grad\_output.
+
+```
+for i in range(h):
+    for j in range(w):
+        region = padded_grad[i:i+kh, j:j+kw]
+        grad_input[i,j] = np.sum(region * flipped)
+```
+
+---
+
+$$
+gradInput = \begin{bmatrix}
+a w_{00} & a w_{01} + b w_{00} & b w_{01} \\
+a w_{10} + c w_{00} & a w_{11} + b w_{10} + c w_{01} + d w_{00} & b w_{11} + d w_{01} \\
+c w_{10} & c w_{11} + d w_{10} & d w_{11}
+\end{bmatrix}
 $$
 
 
@@ -210,7 +264,7 @@ $$
 Let the gradient coming from the next layer be:
 
 $$
-grad\_output = \begin{bmatrix}
+gradOutput = \begin{bmatrix}
 a & b \\
 c & d \\
 \end{bmatrix}
