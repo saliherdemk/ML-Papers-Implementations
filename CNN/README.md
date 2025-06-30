@@ -1,3 +1,9 @@
+# Implementation Results
+
+<p align="center">
+  <img src="./media/results.png">
+</p>
+
 # Convolutional Neural Networks
 
 Convolutional Neural Networks are specialized neural networks designed to process grid-like data such as images. They exploit spatial hierarchies through convolutional layers that apply filters to local patches of the input.
