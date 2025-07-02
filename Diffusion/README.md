@@ -1,3 +1,12 @@
+# Implementation Results
+
+Forward pass results
+
+<p align="center">
+  <img src="./media/forward_result.png">
+</p>
+
+
 # Diffisuion Models
 
 Diffusion models are generative models that learn to reverse a gradual noising process. Imagine you start with a clean image and add random noise to it step by step, until it becomes pure noise. Now, the task is: how do you reverse that process to recover the original image?
@@ -129,6 +138,12 @@ $$
 x_t = \underbrace{\sqrt{1 - \beta_t} \, x_{t-1}}_{\text{signal decayed from } x_{t-1}} + \underbrace{\sqrt{\beta_t} \, \epsilon_t}_{\epsilon_t \sim \mathcal{N}(0, \mathbf{I})}
 $$
 
+We can generilize the formula with  $\bar\alpha = \prod_{s=1}^t(1 - \beta_s)$
+
+$$
+x_t = \sqrt{\bar\alpha} x_0 + \sqrt{1- \bar\alpha}\epsilon
+$$
+
 
 ## Example
 
@@ -207,3 +222,4 @@ $$
 
 - https://erdem.pl/2023/11/step-by-step-visual-introduction-to-diffusion-models
 - https://www.youtube.com/watch?v=UVvuwv-ne1I
+- https://huggingface.co/learn/diffusion-course/unit1/3
