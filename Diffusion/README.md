@@ -6,6 +6,13 @@ Forward pass results
   <img src="./media/forward_result.png">
 </p>
 
+Recover
+
+<p align="center">
+  <img src="./media/result.png">
+</p>
+
+
 
 # Diffisuion Models
 
@@ -255,3 +262,5 @@ $$
 - https://erdem.pl/2023/11/step-by-step-visual-introduction-to-diffusion-models
 - https://www.youtube.com/watch?v=UVvuwv-ne1I
 - https://huggingface.co/learn/diffusion-course/unit1/3
+- https://github.com/tanelp/tiny-diffusion/
+- https://github.com/schinger/DiffusionModel?tab=readme-ov-file
