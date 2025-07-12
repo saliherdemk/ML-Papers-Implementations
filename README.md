@@ -23,7 +23,8 @@ This repository contains implementations of machine learning papers. In the earl
 
 - [CNN](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/CNN)
 - [RNN-LSTM-GRU](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/RNN-LSTM)
-- Diffusion Models *(planned)*
+- [Diffusion Models](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/Diffusion)
+- [Reinforcement Learning](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/ReinforcementLearning)
 - Attention Mechanism *(planned)*
 
 ## ML Papers
