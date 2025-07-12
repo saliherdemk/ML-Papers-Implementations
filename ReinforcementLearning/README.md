@@ -4,14 +4,14 @@
 [Snake AI with Deep Q-Network](https://github.com/saliherdemk/snake-rl/tree/master)
 
 <center>
-<img src="./media/snake_result.png"> </img>
+<img src="./media/demo.gif" width="600" height="500"></img>
 </center>
 
 ### A Couple of Things to Note:
 
 ####  Creating a Separate Target Network Significantly Improved Model Quality
 
-In standard Q-learning, the same network is used to predict Q-values for the current state and calculate target Q-values for the next state. This creates a **moving target problem**, as the network is updated continuously, which causes the targets to shift as well. It's like trying to hit a target that keeps moving while you're shooting at it.
+In standard Q-learning, the same network is used to predict Q-values for the current state and calculate target Q-values for the next state. This creates a moving target problem, as the network is updated continuously, which causes the targets to shift as well. It's like trying to hit a target that keeps moving while you're shooting at it.
 
 By introducing a target network, the main network is updated continuously during training, while the target network is updated periodically (matching the main network). This stabilizes the training process and significantly improves the model's performance.
 
@@ -139,7 +139,7 @@ then follows the best possible policy afterward.
 This equation gives us a way to compute $Q∗(s,a)$ recursively:
 
 $$
-Q^*(s,a) = \mathbb{E} \left[ r + \gamma \max_{a'} Q^*(s', a') \right]
+Q^*(s,a) = E \left[ r + \gamma \max_{a'} Q^*(s', a') \right]
 $$
 
 This says:
@@ -335,6 +335,7 @@ Assume:
 - The reward was -0.005, and gamma = 0.99
 
 We calculate:
+
 $$
 targetQ = reward + \gamma *max(nextQ) = −0.005 + 0.99 *0.3 = 0.292
 $$
