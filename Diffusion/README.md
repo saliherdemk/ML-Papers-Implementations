@@ -138,50 +138,43 @@ $$
 \sqrt{\sum} = \sqrt{\beta_t}I 
 $$
 
-Thus
-
-
-$$
-x_t = \underbrace{\sqrt{1 - \beta_t} \, x_{t-1}}_{\text{signal decayed from } x_{t-1}} + \underbrace{\sqrt{\beta_t} \, \epsilon_t}_{\epsilon_t \sim \mathcal{N}(0, \mathbf{I})}
-$$
-
-We can generilize the formula with  $\bar\alpha = \prod_{s=1}^t(1 - \beta_s)$
+Thus,
 
 $$
-x_t = \sqrt{\bar\alpha} x_0 + \sqrt{1- \bar\alpha}\epsilon
+x_t = \underbrace{\sqrt{1 - \beta_t} \, x_{t-1}}_{\text{signal decayed from } x_{t-1}} + \underbrace{\sqrt{\beta_t} \, \epsilon_t}_{\epsilon_t \sim N(0, I)}
 $$
 
+We can generalize the formula using $\bar\alpha_t = \prod_{s=1}^t (1 - \beta_s)$:
+
+$$
+x_t = \sqrt{\bar\alpha_t} \, x_0 + \sqrt{1 - \bar\alpha_t} \, \epsilon
+$$
 
 The reverse process attempts to denoise $x_t$ step-by-step to recover a sample from the data distribution. The paper shows that the reverse transition is also Gaussian:
 
 $$
-q(x_{t-1} \mid x_t, x_0) = \mathcal{N}(x_{t-1}; \mu_t(x_t, x_0), \tilde{\beta}_t \mathbf{I})
+q(x_{t-1} \mid x_t, x_0) = N\left(x_{t-1}; \mu_t(x_t, x_0), \tilde{\beta}_t I\right)
 $$
 
 The mean is given by:
 
 $$
-\mu_t(x_t, x_0) = \frac{
-\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1}) x_t + \sqrt{\bar{\alpha}_{t-1}} \beta_t x_0
-}{
-1 - \bar{\alpha}_t
-}
+\mu_t(x_t, x_0) = \frac{\sqrt{\alpha_t}(1 - \bar{\alpha}_{t-1}) x_t + \sqrt{\bar{\alpha}_{t-1}}\beta_t x_0 }{ 1 - \bar{\alpha}_t }
 $$
 
 In practice, since $x_0$ is unknown, we approximate it using the model's predicted noise:
 
 $$
-\hat{x}_0 = \frac{1}{\sqrt{\bar{\alpha}_t}} \left( x_t - \sqrt{1 - \bar{\alpha}_t} \cdot \epsilon_\theta(x_t, t) \right)
+\hat{x}_0 = \frac{1}{\sqrt{\bar{\alpha}_t}} \left(x_t - \sqrt{1 - \bar{\alpha}_t} \cdot \epsilon_\theta(x_t, t) \right)
 $$
 
 Substituting this into the formula above and simplifying yields the commonly used denoising step:
 
 $$
-x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left( x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \cdot \epsilon_\theta(x_t, t) \right) + \sqrt{\beta_t} \cdot z, \quad z \sim \mathcal{N}(0, \mathbf{I})
+x_{t-1} = \frac{1}{\sqrt{\alpha_t}} \left(x_t - \frac{\beta_t}{\sqrt{1 - \bar{\alpha}_t}} \cdot \epsilon_\theta(x_t, t) \right) + \sqrt{\beta_t} \cdot z, \quad z \sim N(0, I)
 $$
 
 This is the core sampling step used during inference.
-
 
 
 ## Example
