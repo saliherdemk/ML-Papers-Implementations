@@ -94,8 +94,7 @@ $$
 So the total energy is:
 
 $$
-E = \underbrace{-\frac{1}{2} \sum_{\substack{i \ne k \\ j \ne k}} w_{ij} s_i s_j + \sum_{i \ne k} \theta_i s_i}_{\text{doesn't change}} 
-\;\; - \sum_{j=1}^N w_{kj} s_k s_j + \theta_k s_k
+E = \underbrace{-\frac{1}{2} \sum_{\substack{i \ne k \\ j \ne k}} w_{ij} s_i s_j + \sum_{i \ne k} \theta_i s_i}_{\text{does not change}} - \sum_{j=1}^N w_{kj} s_k s_j + \theta_k s_k
 $$
 
 Let’s define the part of the energy that depends on $s_k$:
@@ -197,6 +196,7 @@ $P \cdot I$ is used to get rid of self connections.
 First compute the outer products:
 
 For $\mu = 1$:
+
 $$
 \xi^1 \cdot (\xi^1)^T =
 \begin{bmatrix}
@@ -206,8 +206,7 @@ $$
 \end{bmatrix}
 \begin{bmatrix}
 +1 & -1 & +1
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 +1 & -1 & +1 \\
 -1 & +1 & -1 \\
@@ -216,6 +215,7 @@ $$
 $$
 
 For $\mu = 2$:
+
 $$
 \xi^2 \cdot (\xi^2)^T =
 \begin{bmatrix}
@@ -225,8 +225,7 @@ $$
 \end{bmatrix}
 \begin{bmatrix}
 +1 & +1 & -1
-\end{bmatrix}
-=
+\end{bmatrix} =
 \begin{bmatrix}
 +1 & +1 & -1 \\
 +1 & +1 & -1 \\
@@ -237,8 +236,7 @@ $$
 Here $P = 2$
 
 $$
-W = (\xi^1 (\xi^1)^T + \xi^2 (\xi^2)^T )
-=
+W = (\xi^1 (\xi^1)^T + \xi^2 (\xi^2)^T ) =
 \begin{bmatrix}
 2 & 0 & 0 \\
 0 & 2 & -2 \\
