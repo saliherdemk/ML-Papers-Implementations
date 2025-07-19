@@ -71,9 +71,7 @@ So let’s separate the sum based on whether $i = k$ or $j = k$.
 Let’s write the energy as:
 
 $$
-E = -\frac{1}{2} \left( \sum_{\substack{i=1 \\ i \ne k}}^{N} \sum_{\substack{j=1 \\ j \ne k}}^{N} w_{ij} s_i s_j
-+ 2 \sum_{j=1}^{N} w_{kj} s_k s_j \right)
-+ \sum_{i=1}^{N} \theta_i s_i
+E = -\frac{1}{2} \left(\sum_{\substack{i=1 \\ i \ne k}}^{N} \sum_{\substack{j=1 \\ j \ne k}}^{N} w_{ij} s_i s_j + 2 \sum_{j=1}^{N} w_{kj} s_k s_j \right) \sum_{i=1}^{N} \theta_i s_i
 $$
 
 Here’s how we got that:

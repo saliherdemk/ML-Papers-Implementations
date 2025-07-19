@@ -4,7 +4,7 @@
 [Snake AI with Deep Q-Network](https://github.com/saliherdemk/snake-rl/tree/master)
 
 <center>
-<img src="./media/demo.gif" width="600" height="500"></img>
+<img src="https://github.com/saliherdemk/snake-rl-dqn/raw/master/media/demo.gif" width="600" height="500"></img>
 </center>
 
 ### A Couple of Things to Note:
