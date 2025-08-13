@@ -25,6 +25,8 @@ This repository contains implementations of machine learning papers. In the earl
 - [RNN-LSTM-GRU](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/RNN-LSTM)
 - [Diffusion Models](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/Diffusion)
 - [Reinforcement Learning](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/ReinforcementLearning)
+- [Hopfield Networks](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/HopfieldNetworks)
+- [Boltzmann Machine](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/BoltzmannMachine)
 - Attention Mechanism *(planned)*
 
 ## ML Papers
