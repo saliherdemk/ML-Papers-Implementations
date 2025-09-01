@@ -241,11 +241,16 @@ Each element (i, j) in the resulting matrix represents how much token i should a
 - Higher value → token i should pay more attention to token j.
 - Lower value → token i should pay less attention to token j.
 
+<center>
+<img src="./media/qk.png"></img>
+</center>
+
+
 Before explaining what that means, lets apply normalization. Full formula for that operation contains $\sqrt{d_k}$. Without scaling, when $d_k$ is large, the dot products grow large in magnitude. This pushes the softmax into regions with very small gradients. Dividing by $\sqrt{d_k}$ keeps values at a manageable range. (https://www.youtube.com/watch?v=kCc8FmEb1nY&t=4615s)
 
 After lastly we use softmax to convert raw values into probabilities.
 
-### $\text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)$
+### Attention Weights = $\text{softmax}\left(\frac{QK^\top}{\sqrt{d_k}}\right)$
 
 | Token | 0       | 1       | 2       | 3       | 4       | 5       | 6       | 7       | 8       | 9       | 10      | 11      |
 |-------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
@@ -267,8 +272,60 @@ These are the probabilities of which token is most likely to attend to which oth
 
 Let's say you have a sentence: “The cat sat on the mat because it was tired.” When thinking about “it”, your brain attends to “the cat” rather than “the mat,” because that’s the relevant information. That means the score will be high at row 7, col 1, because “it” attends to “cat”.
 
+Lastly, we perform matrix mul to get the final output of the block. `Output = Attention Weights @ V`
+
+### Output
+
+| Token | Dim 1   | Dim 2   | Dim 3   | Dim 4   | Dim 5   | Dim 6   | Dim 7   | Dim 8   | Dim 9   | Dim 10  | Dim 11  | Dim 12  | Dim 13  | Dim 14  | Dim 15  | Dim 16  |
+|-------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|---------|
+| 0     | -3.9455 | -0.5648 | 2.6620  | 0.2562  | -2.0361 | -1.4594 | -2.1260 | -1.0559 | -3.5259 | 1.6257  | -2.2297 | -0.0294 | -1.5678 | 0.1952  | 2.5158  | 0.4400  |
+| 1     | 5.9644  | -3.6932 | -3.9442 | -2.4946 | 1.6010  | 1.8314  | -0.7666 | -2.8882 | 2.5267  | -1.2690 | -0.9677 | 0.9362  | 6.0029  | -4.1766 | 3.2551  | -1.7847 |
+| 2     | 5.8034  | -3.6013 | -3.8095 | -2.3231 | 1.6340  | 1.7966  | -0.8270 | -2.7634 | 2.3828  | -1.2919 | -0.8664 | 0.9235  | 5.8850  | -4.0331 | 3.2526  | -1.6512 |
+| 3     | 4.1171  | -3.4624 | -3.5278 | -2.2945 | -0.5909 | 0.6889  | -0.0205 | -2.0553 | 0.8455  | -0.8874 | 0.1421  | 0.0759  | 3.8865  | -3.4999 | 2.4491  | -1.0215 |
+| 4     | 5.9662  | -3.6944 | -3.9463 | -2.4980 | 1.5998  | 1.8313  | -0.7656 | -2.8904 | 2.5286  | -1.2682 | -0.9692 | 0.9360  | 6.0043  | -4.1791 | 3.2546  | -1.7872 |
+| 5     | -1.3048 | 0.2973  | -0.4619 | -3.8970 | 1.5103  | -1.5468 | -2.7433 | -3.3085 | -1.2453 | 0.3058  | 1.0342  | -0.6843 | 1.7059  | -2.2799 | 0.5267  | -0.8247 |
+| 6     | 5.8082  | -3.6076 | -3.8499 | -2.4180 | 1.5958  | 1.7709  | -0.8146 | -2.8225 | 2.4098  | -1.2580 | -0.8864 | 0.9031  | 5.8958  | -4.0885 | 3.2237  | -1.7088 |
+| 7     | 5.9608  | -3.6912 | -3.9415 | -2.4955 | 1.5997  | 1.8304  | -0.7678 | -2.8891 | 2.5241  | -1.2676 | -0.9683 | 0.9360  | 5.9999  | -4.1746 | 3.2527  | -1.7857 |
+| 8     | -3.2447 | -0.9969 | 2.6092  | -0.2837 | -1.1514 | -0.9080 | -1.2721 | -0.9098 | -3.2180 | 0.7061  | -1.5290 | 0.1504  | -1.2668 | -0.0144 | 2.2590  | 0.9848  |
+| 9     | 5.9672  | -3.6948 | -3.9465 | -2.4976 | 1.6004  | 1.8320  | -0.7656 | -2.8903 | 2.5292  | -1.2686 | -0.9695 | 0.9364  | 6.0049  | -4.1791 | 3.2551  | -1.7870 |
+| 10    | -1.8461 | 0.9911  | -0.4671 | -4.1267 | 0.2550  | -2.3084 | -3.5695 | -3.6467 | -1.6978 | 1.8233  | 0.5633  | -1.2341 | 2.0571  | -3.1289 | 0.2488  | -2.3471 |
+| 11    | 0.3290  | -0.5022 | 2.2688  | 1.8914  | 1.4257  | 1.8709  | -2.7829 | -0.8988 | -3.4887 | -1.0489 | -0.0575 | 1.5208  | 0.0771  | 2.6791  | 0.9955  | 0.6242  |
+
+Each token gets a new representation that's a weighted combination of all value vectors. The weights determine how much each token contributes to the final representation. Each token now has a new embedding that incorporates information from other relevant tokens in the sequence. It's no longer just the original token embedding, it's been enriched with context.
+
+I've keep asking myself why don't we just use the original embeddings for the Key and Value vectors and it turns out if we used raw embeddings as keys, we'd be asking: How similar is my query to the original token representation? Raw embeddings have fixed relationships. Model can't learn task-specific ways to match information. We'd be stuck with whatever similarities exist in the original embedding space. By introducing lernable space, we can actually store morde than the original relationships.
+
+After that we add the attention output back to the original input (residual connection). This ensures the model doesn't forget the original token information. Usually layer normalization applied also to stabilize training.
+
+And lastly, we're passing to the mlp to process information. This steps adds non-linearity through activation functions and performs complex transformations on the contextualized data. For example for our data,
+
+After attention, token representations might contain: "This token is associated with January and the year 1845"
+
+The MLP processes this to learn patterns like: "When I see January + 1845 : generate 'January' first in output". Complex date formatting rules that require non-linear reasoning.
+
+<center>
+<img src="./media/attention-block.png"></img>
+</center>
+
+#### Multi head Attention
+
+From paper
+
+"
+Instead of performing a single attention function with $d_{model}$-dimensional keys, values and queries, we found it beneficial to linearly project the queries, keys and values h times with different, learned linear projections to $d_k$, $d_k$ and $d_v$ dimensions, respectively.
+"
+
+This means we can run multiple attention block in parallel and then concatinate back to original dimension. IN our example our embed_size is 16. Lets say we have num_heads = 4. This means each attention block head size will be 16/4 = 4. So in each head we have 
+
+- Q shape per head: (seq_len, 4)
+- K shape per head: (seq_len, 4)
+- V shape per head: (seq_len, 4)
+- Attention output per head: (seq_len, 4)
+
+Then we'll concatinate back and get back the original dimension (seq_len, 16). Since each head worked independetly, we need to connect them. That's why we introduce a final mlp layer. The output MLP learns how to combine different insights. With that, we completed our attention block. Models usually consist of multiple attention blocks stacked sequentially and during training, all of the learnable parameters across all blocks are backpropagated and trained simultaneously using standard gradient descent optimization.
 
 ### Resources
 
 - https://www.youtube.com/watch?v=kCc8FmEb1nY& 
 - https://www.youtube.com/watch?v=T3OT8kqoqjc&
+- https://www.youtube.com/watch?v=eMlx5fFNoYc
