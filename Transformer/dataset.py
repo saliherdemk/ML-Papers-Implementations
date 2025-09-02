@@ -49,9 +49,10 @@ class DateDataset(Dataset):
         return len(self.data)
 
     def __getitem__(self, idx):
-        x_encoded, y_encoded = self.tokenizer.encode(self.data[idx])
+        x_encoded, y_in_encoded, y_out_encoded = self.tokenizer.encode(self.data[idx])
 
         x_tensor = torch.tensor(x_encoded, dtype=torch.long)
-        y_tensor = torch.tensor(y_encoded, dtype=torch.long)
+        y_in_tensor = torch.tensor(y_in_encoded, dtype=torch.long)
+        y_out_tensor = torch.tensor(y_out_encoded, dtype=torch.long)
 
-        return x_tensor, y_tensor
+        return x_tensor, y_in_tensor, y_out_tensor

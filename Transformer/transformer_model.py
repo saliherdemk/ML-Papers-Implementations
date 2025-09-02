@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 from attention import CrossAttentionBlock, SelfAttentionBlock
 from embedding_block import EmbeddingBlock
@@ -32,3 +33,17 @@ class Decoder(nn.Module):
         self.cross_layers = nn.ModuleList(
             [CrossAttentionBlock(embed_dim, num_heads) for _ in range(num_layers)]
         )
+
+    def generate_mask(self, sz, device):
+        mask = torch.triu(torch.ones(sz, sz, device=device) * float("-inf"), diagonal=1)
+        return mask
+
+    def forward(self, tgt, enc_out):
+        x = self.emb_block(tgt)
+        mask = self.generate_mask(x.size(1), x.device)
+
+        for self_layer, cross_layer in zip(self.self_layers, self.cross_layers):
+            x = self_layer(x, mask)
+            x = cross_layer(x, enc_out, enc_out)
+
+        return x

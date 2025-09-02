@@ -5,7 +5,7 @@ from dataset import DateDataset, generate_random_dates
 from embedding_block import EmbeddingBlock
 from tokenizer import Tokenizer
 from torch.utils.data import DataLoader
-from transformer_model import Encoder
+from transformer_model import Decoder, Encoder
 
 
 def train(model, dataloader, vocab_size, num_epochs=10, lr=1e-4, device="cuda"):
@@ -43,7 +43,7 @@ def main():
     embed_dim = 16
     max_seq_len = 20
 
-    model = Encoder(
+    encoder_model = Encoder(
         vocab_size=tokenizer.vocab_size,
         embed_dim=embed_dim,
         max_seq_len=max_seq_len,
@@ -51,8 +51,19 @@ def main():
         num_heads=4,
         num_layers=2,
     )
-    for src, tgt in dataloader:
-        print(src.shape, model(src).shape)
+
+    decoder_model = Decoder(
+        vocab_size=tokenizer.vocab_size,
+        embed_dim=embed_dim,
+        max_seq_len=max_seq_len,
+        pad_id=tokenizer.pad_token_id,
+        num_heads=4,
+        num_layers=2,
+    )
+
+    for src, tgt_in, tgt_out in dataloader:
+        enc_out = encoder_model(src)
+        print(enc_out.shape, decoder_model(tgt_in, enc_out).shape)
         break
 
 
