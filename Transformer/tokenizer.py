@@ -33,6 +33,9 @@ class Tokenizer:
 
         return x_ids, tgt_in_ids, tgt_out_ids
 
-    def decode(self, ids):
-        res = [self.ids_to_tokens[str(i)] for i in ids]
-        return "".join(res)
+    def decode(self, batch_ids):
+        result = []
+        for ids in batch_ids:
+            res = [self.ids_to_tokens[str(i.item())] for i in ids]
+            result.append("".join(res))
+        return result

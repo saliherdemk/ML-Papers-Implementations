@@ -27,7 +27,7 @@ This repository contains implementations of machine learning papers. In the earl
 - [Reinforcement Learning](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/ReinforcementLearning)
 - [Hopfield Networks](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/HopfieldNetworks)
 - [Boltzmann Machine](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/BoltzmannMachine)
-- Attention Mechanism *(planned)*
+- [Attention Mechanism - Encoder-Decoder](https://github.com/saliherdemk/ML-Papers-Implementations/tree/master/Transformer)
 
 ## ML Papers
 

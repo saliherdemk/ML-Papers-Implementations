@@ -2,6 +2,33 @@
 
 [Original Paper: Attention is All You Need](https://arxiv.org/abs/1706.03762)
 
+
+# Results
+
+
+| Epoch | Loss    |
+|-------|---------|
+| 10    | 0.6455  |
+| 20    | 0.3487  |
+| 30    | 0.1395  |
+| 40    | 0.0537  |
+| 50    | 0.0244  |
+
+```
+  python predict.py --dates=1845-01-05,1845-01-06,1426-08-10,2025-09-03
+```
+
+- \<sos>January 5, 1845\<eos>\<pad>\<pad>
+- \<sos>January 6, 1845\<eos>\<pad>\<pad>
+- \<sos>August 10, 1426\<eos>\<pad>\<pad>
+- \<sos>September 3, 2025\<eos>
+
+The pre-trained model can be found in the weights folder, which the `predict.py` script pulls from.
+
+### What's different from the original paper
+
+Size is obvious but as an implementation choice I believe the decoder can be stacked as a whole, including the masked multi-head attention, cross-attention block, and fnn in the original paper. I can’t stack decoder blocks with my current implementation because the cross-attention block would need to be adjusted for that as well. I also included the final linear layer in the decoder since I only need one encoder and one decoder for this simple problem. I chose this problem because I wanted to create an encoder-decoder architecture with cross-attention, unlike Karpathy's tutorial. The inputs and outputs of this simple dataset are not in the same space and the maximum sequence lengths are different. Also it can be trained on cpu.
+
 # Transformer Architecture
 
 ### Example Data

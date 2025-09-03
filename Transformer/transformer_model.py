@@ -33,6 +33,7 @@ class Decoder(nn.Module):
         self.cross_layers = nn.ModuleList(
             [CrossAttentionBlock(embed_dim, num_heads) for _ in range(num_layers)]
         )
+        self.out_proj = nn.Linear(embed_dim, vocab_size)
 
     def generate_mask(self, sz, device):
         mask = torch.triu(torch.ones(sz, sz, device=device) * float("-inf"), diagonal=1)
@@ -46,4 +47,4 @@ class Decoder(nn.Module):
             x = self_layer(x, mask)
             x = cross_layer(x, enc_out, enc_out)
 
-        return x
+        return self.out_proj(x)
