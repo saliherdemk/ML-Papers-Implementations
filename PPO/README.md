@@ -88,10 +88,122 @@ V_{\phi}(s_t) \approx \mathbb{E}[G_t | s_t]
 $$
 
 
+$G_t$ is the actual discounted return from timestep t onward. Which asks how much reward did I really get after being in this state?
+
+$V_{\phi}(s_t)$ predicts the expected return starting from state $s_t$
+
+$A_t$ measures how much better or worse the taken action was compared to expectation.
+
+Lets say we have 
+
+```
+[0] [1] [2] [3] [4]
+[5] [6] [7] [8] [9]
+```
+
+- Start state : 0
+- Goal state: 4
+- Actions: left, right, up, down
+
+Each move gives reward -1 and reaching the goal is +10.
+
+We're starting to collect trajectories.
+
+| t | State | Action | Reward |
+| - | ----- | ------ | ------ |
+| 0 | 0     | RIGHT  | −1     |
+| 1 | 1     | RIGHT  | −1     |
+| 2 | 2     | RIGHT  | −1     |
+| 3 | 3     | RIGHT  | +10    |
+
+In the beggining, our policy is just uniform.
+
+$$
+\pi_{old}(a | s) = [0.25, 0.25, 0.25, 0.25]
+$$
+
+And our critic predictions are random.
+
+V(s0) = 5.0
+V(s1) = 6.5
+V(s2) = 8.0
+V(s3) = 9.5
+
+Left calculate returns for that trajectory:
+
+$$
+G_t = r_t + \gamma r_{t+1} + \gamma^2 r_{t+2}+...
+$$
+
+let be $\gamma$ = 0.99
+
+- $G_0$ = $-1 + 0.99 * -1 + 0.99^2 * -1 + 0.99 ^ 3 * 10 = 6.73$
+- $G_1$ = $-1 + 0.99 * -1 +  0.99 ^ 2 * 10 = 7.81$
+- $G_2$ = $-1 + 0.99 * 10 = 8.9$
+- $G_3$ = 10
+
+| t | G_t  | V(s) | A_t   |
+| - | ---- | ---- | ----- |
+| 0 | 6.73 | 5.0  | +1.73 |
+| 1 | 7.81 | 6.5  | +1.31 |
+| 2 | 8.9  | 8.0  | +0.90 |
+| 3 | 10.0 | 9.5  | +0.50 |
+
+PPO Objective Function
+
+$$
+L_t^{CLIP}(\theta) = min(r_t(\theta)A_t, clip(r_t(\theta),1 - \epsilon, 1 + \epsilon)A_t)
+$$
+
+$$
+r_t(\theta) = \frac{\pi_{\theta}(a_t | s_t)}{\pi_{\theta_{old}}(a_t|s_t)}
+$$
+
+- Positive $A_t$: action better than expected → increase probability
+- Negative $A_t$: action worse than expected → decrease probability
+- Clipping prevents the new policy from overreacting, even if the advantage is large.
+
+At the beggining $\pi_{\theta}$ and $\pi_{\theta_{old}}$ are the same network. So,
+
+$$
+r_t(\theta) = 1
+$$
+
+for all states. For clipping, let's say $\epsilon = 0.2$ which means $r_t$ will be clipped to 0.8-1.2.
+
+| t | A_t  | r_t × A_t | clipped × A_t | L_t^{CLIP} |
+| - | ---- | --------- | ------------- | ---------- |
+| 0 | 1.73 | 1.73      | 1 * 1.73      | 1.73       |
+| 1 | 1.31 | 1.31      | 1 * 1.31      | 1.31       |
+| 2 | 0.90 | 0.90      | 1 * 0.90      | 0.90       |
+| 3 | 0.50 | 0.50      | 1 * 0.50      | 0.50       |
+
+Final policy objective is the expected value of the $L_t^{CLIP}$.
+
+$$
+E_t[L^{CLIP}] = \frac{1.73 + 1.31 + 0.9 + 0.5}{4} = 1.11
+$$
+
+This is actor loss meaning we'll using to train our policy network.
+
+$$
+\theta \leftarrow \theta + \alpha \nabla_{\theta} L^{CLIP}(\theta)
+$$
 
 
+And our final critic loss is just MSE
+
+$$
+L^{VF}(\phi) = \frac{1}{N} \sum_{t=1}^N (V_{\phi}(s_t) - G_t)^2
+$$
 
 
+$$
+\phi \leftarrow \phi - \alpha \nabla_{\phi} L^{CLIP}(\phi)
+$$
+
+In vanilla policy gradient methods you compute the gradient of the expected return and update the policy. If the update is too large, the policy can drastically change action probabilities and collapse into bad behaviors or forget previously learned good actions. This is called policy instability. By tracking $r_t$, we measure exactly how much the policy changed for each action. And PPO clips the ratio to a small range to prevents huge updates.
+And in every batch start, we refresh the $\pi_{\theta_{old}} \leftarrow \pi_{\theta}$.
 
 
 ## Resources
