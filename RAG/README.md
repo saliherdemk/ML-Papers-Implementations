@@ -342,7 +342,69 @@ Answer:
  
 The retrieved documents fill the context block in ranked order, highest RRF score first. The model reads the context and the question together and generates a response.
  
+## Query Translation
 
+ Some techniques emerged to retrieve the related documents better.
+
+### Multi Query
+
+You basically ask llm to generate multiple queries based on the user query.
+
+Query: "Antibiotic resistance patterns in community acquired pneumonia"
+
+LLM:
+
+- What are the common antibiotic resistance trends observed in community-acquired pneumonia?
+- How does antibiotic resistance manifest in cases of pneumonia acquired outside of healthcare settings?
+- What are the current patterns of antibiotic resistance for community-acquired pneumonia?
+- Describe the prevalence of antibiotic resistance in community-acquired pneumonia.
+- What are the typical resistance profiles of bacteria causing community-acquired pneumonia?
+
+Then we retrieve documents for each of the query and then deduplicate the documents.
+
+### Rag-Fusion
+
+RAG Fusion extends Multi Query by replacing deduplication with RRF. Instead of just pooling unique documents, it retrieves a ranked list for each sub-query and merges those lists using RRF so that documents consistently appearing near the top across multiple queries rise to the front.
+
+Query: "Antibiotic resistance patterns in community acquired pneumonia"
+
+LLM generates the same sub-queries as Multi Query. Then for each sub-query we run retrieval and get a ranked list:
+
+| Doc | Rank (Q1) | Rank (Q2) | Rank (Q3) | Rank (Q4) | Rank (Q5) |
+|-----|-----------|-----------|-----------|-----------|-----------|
+| Doc A | 1 | 2 | 1 | 3 | 2 |
+| Doc B | 2 | 1 | 4 | 1 | 3 |
+| Doc C | 3 | 3 | 2 | 2 | 1 |
+| Doc D | 4 | 5 | 3 | 4 | 5 |
+| Doc E | 5 | 4 | 5 | 5 | 4 |
+
+Using $k = 60$, each document's RRF score sums across all five ranked lists:
+
+$$
+\text{RRF}(d) = \sum_{i=1}^{5} \frac{1}{60 + \text{rank}_i(d)}
+$$
+
+Doc A: $\dfrac{1}{61} + \dfrac{1}{62} + \dfrac{1}{61} + \dfrac{1}{63} + \dfrac{1}{62} \approx 0.08138$
+
+Doc B: $\dfrac{1}{62} + \dfrac{1}{61} + \dfrac{1}{64} + \dfrac{1}{61} + \dfrac{1}{63} \approx 0.08091$
+
+Doc C: $\dfrac{1}{63} + \dfrac{1}{63} + \dfrac{1}{62} + \dfrac{1}{62} + \dfrac{1}{61} \approx 0.08020$
+
+Doc D: $\dfrac{1}{64} + \dfrac{1}{65} + \dfrac{1}{63} + \dfrac{1}{64} + \dfrac{1}{65} \approx 0.07732$
+
+Doc E: $\dfrac{1}{65} + \dfrac{1}{64} + \dfrac{1}{65} + \dfrac{1}{65} + \dfrac{1}{64} \approx 0.07660$
+
+#### Results
+
+| Rank | Doc | RRF Score |
+|------|-----|-----------|
+| 1 | Doc A | 0.08138 |
+| 2 | Doc B | 0.08091 |
+| 3 | Doc C | 0.08020 |
+| 4 | Doc D | 0.07732 |
+| 5 | Doc E | 0.07660 |
+
+The top $k$ documents by RRF score are then passed to the generator. A document that ranks 1st for one query but never appears for the others will score lower than one that ranks 2nd or 3rd consistently across all queries.
 ## Resources
 
 - https://arxiv.org/pdf/2312.10997

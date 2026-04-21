@@ -6,3 +6,6 @@ rank-bm25==0.2.2
 sentence-transformers==5.4.1
 faiss-cpu==1.13.2
 jupyter==1.1.1
+langsmith==0.7.33
+google-genai==1.73.1
+langchain-google-genai==4.2.2
