@@ -404,9 +404,25 @@ Doc E: $\dfrac{1}{65} + \dfrac{1}{64} + \dfrac{1}{65} + \dfrac{1}{65} + \dfrac{1
 | 4 | Doc D | 0.07732 |
 | 5 | Doc E | 0.07660 |
 
-The top $k$ documents by RRF score are then passed to the generator. A document that ranks 1st for one query but never appears for the others will score lower than one that ranks 2nd or 3rd consistently across all queries.
+The top $k$ documents by RRF score are teen passed to the generator. A document that ranks 1st for one query but never appears for the others will score lower than one that ranks 2nd or 3rd consistently across all queries.
+
+## Decomposition
+
+We break a complex query into smaller, independent sub-questions that can each be answered on their own. For every sub-question, we retrieve relevant documents and generate an answer. As we move forward, we keep things connected by passing along earlier results: when answering the second question, we include the first question and its answer; for the third, we include the first two question–answer pairs, and so on.
+
+---
+
+## Example
+
+| Step | Sub-Question | Input to LLM             | Output |
+| ---- | ------------ | ------------------------ | ------ |
+| 1    | Q1           | Q1                       | A1     |
+| 2    | Q2           | Q2 + (Q1, A1)            | A2     |
+| 3    | Q3           | Q3 + (Q1, A1) + (Q2, A2) | A3     |
+
 ## Resources
 
 - https://arxiv.org/pdf/2312.10997
 - https://www.youtube.com/watch?v=sVcwVQRHIc8 (I recommend this instead of reading the first resource)
 - https://www.youtube.com/watch?v=0iNrGpwZwog
+- https://github.com/langchain-ai/rag-from-scratch/tree/main
