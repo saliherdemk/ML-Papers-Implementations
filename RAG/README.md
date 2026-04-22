@@ -341,7 +341,20 @@ Answer:
 ```
  
 The retrieved documents fill the context block in ranked order, highest RRF score first. The model reads the context and the question together and generates a response.
- 
+
+> You can find implementations of those techniques in the notebooks or in the full script. Be aware that I implemented those to learn how things work and get more comfortable with LangChain syntax
+so examples and retrieved documents might not be ideal.
+
+.env
+```
+LANGSMITH_TRACING=true
+LANGSMITH_ENDPOINT=https://api.smith.langchain.com
+LANGSMITH_API_KEY=<your-api-key>
+LANGSMITH_PROJECT="RAG"
+
+GOOGLE_API_KEY=<your-google-api-key>
+```
+
 ## Query Translation
 
  Some techniques emerged to retrieve the related documents better.
@@ -410,15 +423,65 @@ The top $k$ documents by RRF score are teen passed to the generator. A document 
 
 We break a complex query into smaller, independent sub-questions that can each be answered on their own. For every sub-question, we retrieve relevant documents and generate an answer. As we move forward, we keep things connected by passing along earlier results: when answering the second question, we include the first question and its answer; for the third, we include the first two question–answer pairs, and so on.
 
----
-
-## Example
-
 | Step | Sub-Question | Input to LLM             | Output |
 | ---- | ------------ | ------------------------ | ------ |
 | 1    | Q1           | Q1                       | A1     |
 | 2    | Q2           | Q2 + (Q1, A1)            | A2     |
 | 3    | Q3           | Q3 + (Q1, A1) + (Q2, A2) | A3     |
+
+
+## Step Back
+
+Instead of retrieving on the original query, we ask the LLM to abstract it into a broader, higher-level question first. Specific questions often miss relevant context because the exact phrasing doesn't overlap with how documents are written. A step-back question targets the underlying concept, surfacing documents that give the model the foundational knowledge it needs to answer the specific question well.
+
+Query: "What happens to membrane fluidity when cholesterol is added at 37°C?"
+
+LLM generates a step-back question:
+
+- What are the effects of cholesterol on cell membrane properties?
+
+We retrieve documents for the step-back question, then pass both the original query and the step-back context to the generator.
+
+```
+You are a helpful assistant. Use the context below to answer the question.
+
+Step-back context:
+[Doc 1]: ...
+[Doc 2]: ...
+
+Question: {original user query}
+
+Answer:
+```
+
+| Step | Input | Output |
+|------|-------|--------|
+| 1 | Original query | Step-back (abstract) question |
+| 2 | Step-back question | Retrieved documents |
+| 3 | Original query + step-back docs | Final answer |
+
+## HyDE
+
+Hypothetical Document Embeddings (HyDE) flips the retrieval problem: instead of embedding the query and searching for similar documents, we ask the LLM to write a hypothetical document that would answer the query, then embed that document and use it for retrieval. A short query sits in a very different part of the embedding space than a full document. By generating a fake but plausible answer first, the embedding lands much closer to where real relevant documents cluster.
+
+Query: "How does RLHF improve language model alignment?"
+
+LLM generates a hypothetical document:
+
+> "Reinforcement Learning from Human Feedback (RLHF) improves alignment by first fine-tuning the model with supervised examples, then training a reward model on human preference rankings, and finally optimizing the language model against that reward model using PPO. This steers generations toward outputs humans rate as helpful and harmless..."
+
+We embed the hypothetical document, run nearest-neighbor search against the real document index, retrieve the top $k$ matches, and pass them with the original query to the generator.
+
+```
+Text → LLM → Hypothetical Document → Embed → Nearest Neighbor Search → Retrieved Docs
+```
+
+| Step | Input | Output |
+|------|-------|--------|
+| 1 | Original query | Hypothetical answer document |
+| 2 | Hypothetical document embedding | Retrieved real documents |
+| 3 | Original query + retrieved docs | Final answer |
+
 
 ## Resources
 
