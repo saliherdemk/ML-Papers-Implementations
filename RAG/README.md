@@ -482,6 +482,40 @@ Text → LLM → Hypothetical Document → Embed → Nearest Neighbor Search →
 | 2 | Hypothetical document embedding | Retrieved real documents |
 | 3 | Original query + retrieved docs | Final answer |
 
+## Indexing
+
+Some techniques emerged to improve indexing to improve retrieval.
+
+### Multi Representation
+
+Instead of embedding raw chunks directly, we use an LLM to generate a compact summary for each document, embed the summary, and store a pointer back to the full document. At query time retrieval happens over summaries, but the generator receives the original full documents. Raw chunks are often long and noisy, which dilutes the embedding. A summary distills the core meaning into fewer tokens, landing closer to where the query sits in vector space, while the full document provides all the detail the generator needs.
+
+Indexing pipeline
+
+```
+Documents → LLM (summarize) → Embed summaries → Vectorstore (summary → doc id) + Docstore (doc id → full doc)
+```
+
+Retrieval pipeline
+
+```
+Query → Embed → Nearest Neighbor Search over summaries → Lookup full docs from Docstore → Generator
+```
+
+#### Example
+
+Query: `"How does sleep deprivation affect memory?"`
+
+LLM generates a summary for each document:
+
+| Doc | Full Content (stored, not indexed) | Summary (embedded and indexed) |
+|-----|------------------------------------|-------------------------------|
+| Doc 1 | "A study of 200 subjects showed reducing sleep from 8 to 4 hours over two weeks caused significant declines in working memory, reaction time, and sustained attention." | "Sleep restriction degrades working memory and attention." |
+| Doc 2 | "150 shift workers averaging 5.5 hours per night showed a 30% drop in problem-solving accuracy and higher error rates in simulated driving tasks." | "Short irregular sleep impairs problem-solving and increases errors." |
+| Doc 3 | "A meta-analysis of 42 studies found sleep deprivation raises cortisol and reduces prefrontal cortex activity, impairing decision-making and emotional regulation." | "Sleep deprivation reduces prefrontal activity and impairs decision-making." |
+
+The summaries are embedded and stored in the vectorstore. The full original documents are stored separately in a docstore, linked by document ID.
+
 
 ## Resources
 
